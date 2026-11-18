@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F6F4EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13171A" media="(prefers-color-scheme: dark)">
+<title>L'Écureuil</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Écureuil">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F4EE;
+    --card:#FFFFFF;
+    --ink:#1E2B24;
+    --ink-soft:#5B6660;
+    --line:#DAD6C9;
+    --green:#2F5F49;
+    --green-light:#E4EEE7;
+    --gold:#B8863C;
+    --red:#A5432E;
+    --hero-bg:#1E2B24;
+    --hero-ink:#F6F4EE;
+    --hero-soft:#B9C4BC;
+    --toast-bg:#1E2B24;
+    --toast-ink:#F6F4EE;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#13171A;
+      --card:#1C2226;
+      --ink:#E7E5DD;
+      --ink-soft:#98A09B;
+      --line:#2C3439;
+      --green:#5AA783;
+      --green-light:#1B2A24;
+      --gold:#CFA765;
+      --red:#DB7059;
+      --hero-bg:#0B0E10;
+      --hero-ink:#E7E5DD;
+      --hero-soft:#8A938D;
+      --toast-bg:#000000;
+      --toast-ink:#F0EEE6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#13171A;--card:#1C2226;--ink:#E7E5DD;--ink-soft:#98A09B;--line:#2C3439;
+    --green:#5AA783;--green-light:#1B2A24;--gold:#CFA765;--red:#DB7059;
+    --hero-bg:#0B0E10;--hero-ink:#E7E5DD;--hero-soft:#8A938D;--toast-bg:#000000;--toast-ink:#F0EEE6;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:110px;
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:calc(24px + env(safe-area-inset-top)) 18px 0;}
+  button{font-family:inherit;}
+  .tnum{font-variant-numeric:tabular-nums;}
+
+  header{margin-bottom:16px;}
+  .head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .eyebrow{font-size:13px;color:var(--ink-soft);margin:0 0 4px;}
+  h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:26px;margin:0;letter-spacing:-0.01em;}
+  .icon-btn{
+    background:var(--card);border:1px solid var(--line);
+    width:38px;height:38px;border-radius:10px;flex-shrink:0;
+    font-size:17px;cursor:pointer;color:var(--ink-soft);
+  }
+  .icon-btn:active{background:var(--line);}
+
+  .month-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+  .month-nav > button{
+    background:none;border:none;color:var(--ink);
+    font-size:20px;padding:4px 12px;cursor:pointer;border-radius:8px;
+  }
+  .month-nav > button:active{background:var(--line);}
+  .month-label{
+    background:none;border:none;font-size:15px;font-weight:500;
+    text-transform:capitalize;color:var(--ink);cursor:pointer;
+    padding:5px 12px;border-radius:8px;
+  }
+  .month-label.off{color:var(--green);background:var(--green-light);}
+  .period-range{text-align:center;margin:6px 0 0;font-size:11.5px;}
+
+  .hero{
+    background:var(--hero-bg);color:var(--hero-ink);
+    border-radius:18px;padding:22px 20px;margin:16px 0 22px;
+    position:relative;overflow:hidden;
+  }
+  .hero .label{font-size:13px;color:var(--hero-soft);margin:0 0 6px;}
+  .hero .amount{font-family:'Fraunces',Georgia,serif;font-size:38px;font-weight:500;margin:0;line-height:1;font-variant-numeric:tabular-nums;}
+  .hero .sub{font-size:13px;color:var(--hero-soft);margin:12px 0 0;line-height:1.5;}
+  .hero .sub strong{color:var(--hero-ink);font-weight:600;}
+  .hero.over{background:var(--red);color:#fff;}
+  .hero.over .label,.hero.over .sub{color:rgba(255,255,255,0.82);}
+  .hero.over .sub strong{color:#fff;}
+  .bar-track{height:6px;background:rgba(255,255,255,0.16);border-radius:99px;margin-top:14px;overflow:hidden;}
+  .bar-fill{height:100%;background:var(--hero-ink);border-radius:99px;transition:width .35s ease;}
+  .hero.over .bar-fill{background:#fff;}
+
+  section{margin-bottom:22px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;gap:10px;}
+  .section-head h2{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:500;margin:0;}
+  .muted{font-size:12px;color:var(--ink-soft);}
+  .muted.center{text-align:center;display:block;}
+
+  .empty{
+    text-align:center;padding:28px 16px;color:var(--ink-soft);font-size:14px;
+    border:1px dashed var(--line);border-radius:var(--radius);line-height:1.6;
+  }
+
+  .search-wrap input{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;
+    background:var(--card);font:inherit;font-size:16px;color:var(--ink);margin-bottom:10px;
+  }
+  .search-wrap input:focus{outline:none;border-color:var(--green);}
+
+  .day-group{margin-bottom:4px;}
+  .day-head{
+    display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);
+    padding:12px 0 4px;font-weight:600;font-variant-numeric:tabular-nums;
+  }
+  .expense-row{
+    display:flex;align-items:center;gap:10px;padding:11px 0;
+    border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .day-group .expense-row:last-child{border-bottom:none;}
+  .expense-row:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:8px;}
+  .expense-info{flex:1;min-width:0;}
+  .expense-name{font-size:14px;font-weight:500;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .expense-meta{font-size:12px;color:var(--ink-soft);margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .expense-amount{font-size:14px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .expense-amount.refund{color:var(--green);}
+  .expense-del{background:none;border:none;color:var(--ink-soft);font-size:16px;padding:4px 6px;cursor:pointer;opacity:.5;flex-shrink:0;}
+  .expense-del:hover,.expense-del:focus{opacity:1;}
+
+  .storage-warn{
+    background:var(--red);color:#fff;font-size:12.5px;line-height:1.5;
+    border-radius:12px;padding:12px 14px;margin:0 0 18px;
+  }
+  .export-reminder{
+    background:var(--green-light);color:var(--green);font-size:12.5px;line-height:1.5;
+    border-radius:12px;padding:12px 14px;margin:0 0 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  }
+  .export-reminder[hidden]{display:none;}
+  .export-reminder .er-actions{display:flex;gap:8px;flex-shrink:0;}
+  .export-reminder button{border:none;border-radius:8px;padding:7px 11px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;}
+  #erExportBtn{background:var(--green);color:#fff;}
+  #erDismissBtn{background:none;color:var(--green);}
+
+  .fab{
+    position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+    width:min(444px,calc(100% - 36px));z-index:5;
+    background:var(--green);color:#fff;border:none;border-radius:99px;
+    padding:15px 0;font-size:15px;font-weight:600;
+    box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;
+  }
+  .fab:active{transform:translateX(-50%) scale(0.98);}
+
+  .toast{
+    position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(16px);
+    background:var(--toast-bg);color:var(--toast-ink);border-radius:12px;
+    padding:12px 14px;display:flex;align-items:center;gap:14px;font-size:13.5px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.28);z-index:50;max-width:calc(100% - 32px);
+    opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility .2s;
+  }
+  .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
+  .toast button{background:none;border:none;color:var(--gold);font-weight:700;font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap;}
+
+  .sheet-backdrop{
+    position:fixed;inset:0;background:rgba(20,26,22,0.45);z-index:40;
+    display:flex;align-items:flex-end;justify-content:center;
+    opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;
+  }
+  .sheet-backdrop.show{opacity:1;visibility:visible;}
+  .sheet{
+    background:var(--paper);width:100%;max-width:480px;
+    border-radius:22px 22px 0 0;padding:20px 20px calc(26px + env(safe-area-inset-bottom));
+    max-height:88vh;overflow-y:auto;
+    transform:translateY(14px);transition:transform .24s ease;
+  }
+  .sheet-backdrop.show .sheet{transform:none;}
+  .sheet-grip{width:36px;height:4px;border-radius:99px;background:var(--line);margin:0 auto 14px;}
+  .sheet h3{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:19px;margin:0 0 16px;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
+  .field input,.field select{
+    width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--line);
+    background:var(--card);font:inherit;font-size:16px;color:var(--ink);
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--green);}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+  .type-toggle{display:flex;gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:3px;}
+  .type-toggle button{flex:1;border:none;background:none;padding:9px 6px;border-radius:8px;font:inherit;font-size:13.5px;font-weight:500;color:var(--ink-soft);cursor:pointer;}
+  .type-toggle button.active{background:var(--green-light);color:var(--green);font-weight:600;}
+
+  .sheet-actions{display:flex;gap:10px;margin-top:18px;}
+  .btn{flex:1;padding:14px 0;border-radius:12px;border:none;font:inherit;font-size:15px;font-weight:600;cursor:pointer;}
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary.danger{background:var(--red);}
+  .btn-secondary{background:var(--card);color:var(--ink);border:1px solid var(--line);}
+  .btn-delete{
+    width:100%;padding:12px;background:none;border:1px solid var(--red);color:var(--red);
+    border-radius:12px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;margin-top:12px;
+  }
+  .error-msg{color:var(--red);font-size:12.5px;margin:2px 0 0;min-height:1px;display:none;}
+  .error-msg.show{display:block;}
+
+  .sal-summary{font-size:13.5px;color:var(--ink);margin:0 0 8px;line-height:1.5;}
+  .sal-summary .muted{font-size:12.5px;}
+  .sal-preview{
+    font-size:13px;line-height:1.5;margin:-4px 0 6px;padding:10px 12px;border-radius:10px;
+    background:var(--green-light);color:var(--green);
+  }
+  .sal-preview.bad{background:none;border:1px solid var(--red);color:var(--red);}
+  .sal-preview:empty{display:none;}
+
+  .sync-status{font-size:13.5px;color:var(--ink);margin:0 0 8px;line-height:1.5;}
+  .sync-status.ok{color:var(--green);}
+  .sync-status.bad{color:var(--red);}
+  .sync-intro{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:-6px 0 14px;}
+  .sync-help{font-size:13px;color:var(--ink-soft);margin:-4px 0 6px;line-height:1.5;}
+  .sync-help summary{cursor:pointer;color:var(--green);font-weight:600;}
+  .sync-help ol{margin:8px 0 0;padding-left:20px;display:grid;gap:4px;}
+  .btn[disabled]{opacity:.6;cursor:default;}
+  .data-actions[hidden]{display:none;}
+
+  .add-row-btn{
+    width:100%;padding:12px;border:1px dashed var(--line);border-radius:10px;
+    background:none;color:var(--green);font:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;
+  }
+
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:6px 0 14px;}
+  .toggle-row input{appearance:none;-webkit-appearance:none;width:44px;height:26px;background:var(--line);border-radius:99px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+  .toggle-row input:checked{background:var(--green);}
+  .toggle-row input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;}
+  .toggle-row input:checked::after{transform:translateX(18px);}
+
+  .data-actions{display:flex;gap:8px;margin-bottom:4px;}
+  .data-actions .btn{padding:12px 0;font-size:14px;}
+
+  /* ----- Onglets de vue ----- */
+  .view-tabs{
+    display:flex;gap:4px;margin-top:16px;
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:3px;
+  }
+  .view-tabs button{
+    flex:1;border:none;background:none;padding:9px 6px;border-radius:8px;
+    font:inherit;font-size:13.5px;font-weight:500;color:var(--ink-soft);cursor:pointer;
+  }
+  .view-tabs button.active{background:var(--green-light);color:var(--green);font-weight:600;}
+
+  /* ----- Reste à vivre ----- */
+  .savings-card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:16px 18px;margin:0 0 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  }
+  .savings-card .sc-label{font-size:12px;color:var(--ink-soft);margin:0 0 4px;}
+  .savings-card .sc-total{font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:500;margin:0;line-height:1;font-variant-numeric:tabular-nums;}
+  .savings-card .sc-total.neg{color:var(--red);}
+  .savings-card .sc-delta{font-size:12.5px;margin:8px 0 0;font-variant-numeric:tabular-nums;color:var(--ink-soft);}
+  .savings-card .sc-delta.pos{color:var(--green);}
+  .savings-card .sc-delta.neg{color:var(--red);}
+  .savings-card .sc-icon{font-size:22px;line-height:1;flex-shrink:0;}
+
+  .flow{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:6px 16px;margin-bottom:10px;
+  }
+  .flow-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;
+  }
+  .flow-row:last-child{border-bottom:none;}
+  .flow-row .fr-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1;}
+  .flow-row .fr-left .txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .flow-row .fr-val{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .flow-row .fr-val.pos{color:var(--green);}
+  .flow-row .fr-val.neg{color:var(--red);}
+  .flow-row.total{border-top:2px solid var(--ink);border-bottom:none;margin-top:2px;}
+  .flow-row.total .fr-left{font-weight:600;}
+  .flow-row.total .fr-val{font-size:16px;}
+  .flow-row.subtotal{font-weight:600;}
+  .flow-row.sub{padding:8px 0;font-size:12.5px;color:var(--ink-soft);}
+  .flow-row.sub .fr-val{font-weight:500;}
+  .fr-edit{
+    background:none;border:none;color:var(--green);font:inherit;font-size:12.5px;
+    font-weight:600;cursor:pointer;padding:4px 2px;flex-shrink:0;
+  }
+
+  .rec-row{
+    display:flex;align-items:center;gap:10px;padding:12px 0;
+    border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .rec-row:last-child{border-bottom:none;}
+  .rec-row:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:8px;}
+  .rec-info{flex:1;min-width:0;}
+  .rec-name{font-size:14px;font-weight:500;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rec-meta{font-size:12px;color:var(--ink-soft);margin:2px 0 0;}
+  .rec-amount{font-size:14px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .rec-amount.pos{color:var(--green);}
+
+  .hist-row{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;font-variant-numeric:tabular-nums;
+  }
+  .hist-row:last-child{border-bottom:none;}
+  .hist-row .h-month{color:var(--ink-soft);flex:1;}
+  .hist-row .h-impact{font-weight:600;text-align:right;}
+  .hist-row .h-impact.pos{color:var(--green);}
+  .hist-row .h-impact.neg{color:var(--red);}
+  .hist-row.cur{font-weight:600;}
+  .hist-row.cur .h-month{color:var(--ink);}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="head-top">
+      <div>
+        <p class="eyebrow">Mon budget</p>
+        <h1>L'Écureuil 🐿️</h1>
+      </div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Réglages">⚙</button>
+    </div>
+    <div class="view-tabs" id="viewTabs" role="tablist">
+      <button type="button" data-view="expenses" class="active" role="tab">Dépenses</button>
+      <button type="button" data-view="cashflow" role="tab">Reste à vivre</button>
+    </div>
+    <div class="month-nav">
+      <button id="prevMonth" aria-label="Mois précédent">‹</button>
+      <button class="month-label" id="monthLabel" title="Revenir au mois courant"></button>
+      <button id="nextMonth" aria-label="Mois suivant">›</button>
+    </div>
+    <p class="muted period-range" id="periodRange" hidden></p>
+  </header>
+
+  <div class="storage-warn" id="storageWarn" hidden>
+    ⚠ Impossible d’enregistrer les données sur cet appareil (navigation privée&nbsp;?). Tes modifications seront perdues à la fermeture — utilise « Exporter » régulièrement.
+  </div>
+
+  <div class="export-reminder" id="exportReminder" hidden>
+    <span id="exportReminderText"></span>
+    <div class="er-actions">
+      <button type="button" id="erExportBtn">Exporter</button>
+      <button type="button" id="erDismissBtn">Plus tard</button>
+    </div>
+  </div>
+
+  <div id="viewExpenses">
+    <div class="hero" id="hero">
+      <p class="label" id="heroLabel">Reste à dépenser</p>
+      <p class="amount" id="heroAmount">0 €</p>
+      <div class="bar-track"><div class="bar-fill" id="heroBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%"></div></div>
+      <p class="sub" id="heroSub"></p>
+    </div>
+
+    <section>
+      <div class="section-head">
+        <h2>Dépenses</h2>
+        <span class="muted tnum" id="expenseCount"></span>
+      </div>
+      <div class="search-wrap" id="searchWrap">
+        <input type="search" id="searchInput" placeholder="Rechercher une dépense…" autocomplete="off" aria-label="Rechercher">
+      </div>
+      <div id="expenseList"></div>
+    </section>
+  </div><!-- /viewExpenses -->
+
+  <div id="viewCashflow" hidden>
+    <div class="hero" id="cfHero">
+      <p class="label" id="cfHeroLabel">Reste à dépenser</p>
+      <p class="amount" id="cfHeroAmount">0 €</p>
+      <div class="bar-track"><div class="bar-fill" id="cfHeroBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%"></div></div>
+      <p class="sub" id="cfHeroSub"></p>
+    </div>
+
+    <div class="savings-card" id="savingsCard">
+      <div>
+        <p class="sc-label">Mis de côté ce mois-ci</p>
+        <p class="sc-total tnum" id="scTotal">0 €</p>
+        <p class="sc-delta" id="scDelta"></p>
+      </div>
+      <span class="sc-icon" aria-hidden="true">💰</span>
+    </div>
+
+    <section>
+      <div class="section-head"><h2 id="cfDetailTitle">Détail du mois</h2></div>
+      <div class="flow" id="cfFlow"></div>
+    </section>
+
+    <section id="cfIncomesSection">
+      <div class="section-head">
+        <h2>Revenus complémentaires</h2>
+        <span class="muted tnum" id="cfIncomesTotal"></span>
+      </div>
+      <div id="cfIncomeList"></div>
+      <button type="button" class="add-row-btn" id="addIncomeBtn">+ Ajouter un revenu</button>
+    </section>
+
+    <section id="cfChargesSection">
+      <div class="section-head">
+        <h2>Charges fixes</h2>
+        <span class="muted tnum" id="cfChargesTotal"></span>
+      </div>
+      <div id="cfChargeList"></div>
+      <button type="button" class="add-row-btn" id="addChargeBtn">+ Ajouter une charge fixe</button>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>Historique du mis de côté</h2></div>
+      <div id="cfHistory"></div>
+    </section>
+  </div><!-- /viewCashflow -->
+</div>
+
+<button class="fab" id="addExpenseBtn">+ Ajouter une dépense</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Feuille : dépense -->
+<div class="sheet-backdrop" id="expenseSheet" aria-hidden="true">
+  <form class="sheet" id="expenseForm" role="dialog" aria-modal="true" aria-labelledby="expenseTitle" novalidate>
+    <div class="sheet-grip"></div>
+    <h3 id="expenseTitle">Nouvelle dépense</h3>
+    <div class="field">
+      <label id="expTypeLabel">Type</label>
+      <div class="type-toggle" id="expType" role="group" aria-labelledby="expTypeLabel">
+        <button type="button" data-type="expense" class="active">Dépense</button>
+        <button type="button" data-type="refund">Remboursement</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="expName">Description</label>
+      <input type="text" id="expName" autocomplete="off" enterkeyhint="done" placeholder="Ex : courses, essence, resto…">
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label for="expAmount">Montant</label>
+        <input type="text" id="expAmount" inputmode="decimal" enterkeyhint="done" placeholder="0,00">
+      </div>
+      <div class="field">
+        <label for="expDate">Date</label>
+        <input type="date" id="expDate">
+      </div>
+    </div>
+    <div class="field">
+      <label for="expNote">Note (facultatif)</label>
+      <input type="text" id="expNote" autocomplete="off" placeholder="Détail, lieu, moyen de paiement…">
+    </div>
+    <p class="error-msg" id="expError"></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-secondary" id="cancelExpense">Annuler</button>
+      <button type="submit" class="btn btn-primary" id="saveExpense">Ajouter</button>
+    </div>
+    <button type="button" class="btn-delete" id="deleteExpense" hidden>Supprimer cette dépense</button>
+  </form>
+</div>
+
+<!-- Feuille : charge fixe / revenu complémentaire -->
+<div class="sheet-backdrop" id="recurringSheet" aria-hidden="true">
+  <form class="sheet" id="recForm" role="dialog" aria-modal="true" aria-labelledby="recTitle" novalidate>
+    <div class="sheet-grip"></div>
+    <h3 id="recTitle">Nouvelle charge fixe</h3>
+    <div class="field">
+      <label for="recName">Nom</label>
+      <input type="text" id="recName" autocomplete="off" placeholder="Ex : loyer, EDF, box…">
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label for="recAmount">Montant / mois</label>
+        <input type="text" id="recAmount" inputmode="decimal" placeholder="0,00">
+      </div>
+      <div class="field" id="recStartField">
+        <label for="recStart">Depuis</label>
+        <input type="month" id="recStart">
+      </div>
+    </div>
+    <p class="muted" id="recHint" style="margin:0 0 4px;"></p>
+    <p class="error-msg" id="recError"></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-secondary" id="cancelRec">Annuler</button>
+      <button type="submit" class="btn btn-primary" id="recSave">Ajouter</button>
+    </div>
+    <button type="button" class="btn-delete" id="recDelete" hidden>Supprimer</button>
+  </form>
+</div>
+
+<!-- Feuille : objectif d'épargne -->
+<div class="sheet-backdrop" id="goalSheet" aria-hidden="true">
+  <form class="sheet" id="goalForm" role="dialog" aria-modal="true" aria-labelledby="goalTitle" novalidate>
+    <div class="sheet-grip"></div>
+    <h3 id="goalTitle">Objectif d’épargne</h3>
+    <div class="field">
+      <label for="goalAmount" id="goalAmountLabel">Montant pour ce mois</label>
+      <input type="text" id="goalAmount" inputmode="decimal" placeholder="0,00">
+    </div>
+    <label class="toggle-row" for="goalDefault">
+      <span>En faire mon objectif par défaut</span>
+      <input type="checkbox" id="goalDefault">
+    </label>
+    <p class="error-msg" id="goalError"></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-secondary" id="cancelGoal">Annuler</button>
+      <button type="submit" class="btn btn-primary" id="saveGoal">Enregistrer</button>
+    </div>
+    <button type="button" class="btn-delete" id="resetGoal" hidden>Revenir à l’objectif par défaut</button>
+  </form>
+</div>
+
+<!-- Feuille : réglages -->
+<div class="sheet-backdrop" id="settingsSheet" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="sheet-grip"></div>
+    <h3 id="settingsTitle">Réglages</h3>
+    <div class="field">
+      <label>Salaire</label>
+      <p class="sal-summary" id="salSummary"></p>
+      <button type="button" class="add-row-btn" id="openSalaryBtn" style="margin-top:0;">Saisir ou modifier un salaire</button>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label for="currencyInput">Devise</label>
+        <input type="text" id="currencyInput" maxlength="4" placeholder="€">
+      </div>
+      <div class="field">
+        <label for="themeSelect">Thème</label>
+        <select id="themeSelect">
+          <option value="auto">Automatique</option>
+          <option value="light">Clair</option>
+          <option value="dark">Sombre</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="defaultGoalInput">Objectif d’épargne / mois</label>
+      <input type="text" id="defaultGoalInput" inputmode="decimal" placeholder="0,00">
+    </div>
+    <label class="toggle-row" for="centsToggle">
+      <span>Afficher les centimes</span>
+      <input type="checkbox" id="centsToggle">
+    </label>
+    <div class="field">
+      <label>Sauvegarde automatique</label>
+      <p class="sync-status" id="syncStatus"></p>
+      <button type="button" class="add-row-btn" id="syncSetupBtn" style="margin-top:0;">Activer la sauvegarde automatique</button>
+      <div class="data-actions" id="syncActions" hidden>
+        <button type="button" class="btn btn-secondary" id="syncRestoreBtn">Restaurer</button>
+        <button type="button" class="btn btn-secondary" id="syncOffBtn">Désactiver</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Fichier de sauvegarde</label>
+      <div class="data-actions">
+        <button type="button" class="btn btn-secondary" id="exportBtn">Exporter</button>
+        <button type="button" class="btn btn-secondary" id="importBtn">Importer</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+      </div>
+    </div>
+    <button type="button" class="btn-delete" id="resetBtn">Tout effacer</button>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-primary" id="closeSettings">Terminé</button>
+    </div>
+  </div>
+</div>
+
+<!-- Feuille : activer la sauvegarde automatique (clé GitHub) -->
+<div class="sheet-backdrop" id="syncSheet" aria-hidden="true">
+  <form class="sheet" id="syncForm" role="dialog" aria-modal="true" aria-labelledby="syncTitle" novalidate>
+    <div class="sheet-grip"></div>
+    <h3 id="syncTitle">Sauvegarde automatique</h3>
+    <p class="sync-intro">À chaque modification, une copie de ton budget est envoyée dans ton dépôt GitHub privé <strong>ecureuil-sauvegarde</strong>. Si ce téléphone perd ses données, colle à nouveau ta clé ici pour tout récupérer.</p>
+    <div class="field">
+      <label for="syncToken">Clé GitHub</label>
+      <input type="password" id="syncToken" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…">
+    </div>
+    <details class="sync-help">
+      <summary>Comment créer la clé ?</summary>
+      <ol>
+        <li>Sur github.com : ta photo → <em>Settings</em> → <em>Developer settings</em> → <em>Personal access tokens</em> → <em>Fine-grained tokens</em> → <em>Generate new token</em>.</li>
+        <li>Nom : « Écureuil ». Expiration : la plus longue possible.</li>
+        <li><em>Repository access</em> → <em>Only select repositories</em> → <strong>ecureuil-sauvegarde</strong>.</li>
+        <li><em>Permissions</em> → <em>Contents</em> → <strong>Read and write</strong>.</li>
+        <li><em>Generate token</em>, copie-la, colle-la ici, et garde-la aussi dans tes notes ou tes mots de passe.</li>
+      </ol>
+    </details>
+    <p class="error-msg" id="syncError"></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-secondary" id="cancelSync">Annuler</button>
+      <button type="submit" class="btn btn-primary" id="saveSync">Activer</button>
+    </div>
+  </form>
+</div>
+
+<!-- Feuille : salaire (rien n'est enregistré avant « Enregistrer ») -->
+<div class="sheet-backdrop" id="salarySheet" aria-hidden="true">
+  <form class="sheet" id="salaryForm" role="dialog" aria-modal="true" aria-labelledby="salaryTitle" novalidate>
+    <div class="sheet-grip"></div>
+    <h3 id="salaryTitle">Salaire</h3>
+    <div class="field">
+      <label for="salMonth">Pour le mois de</label>
+      <input type="month" id="salMonth">
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label for="salAmount">Montant</label>
+        <input type="text" id="salAmount" inputmode="decimal" placeholder="0,00">
+      </div>
+      <div class="field">
+        <label for="salDate">Reçu le</label>
+        <input type="date" id="salDate">
+      </div>
+    </div>
+    <p class="sal-preview" id="salPreview" aria-live="polite"></p>
+    <p class="error-msg" id="salError"></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-secondary" id="cancelSalary">Annuler</button>
+      <button type="submit" class="btn btn-primary" id="saveSalary">Enregistrer</button>
+    </div>
+    <button type="button" class="btn-delete" id="deleteSalary" hidden>Supprimer ce salaire</button>
+  </form>
+</div>
+
+<!-- Feuille : confirmation (remplace window.confirm, bloqué dans certains contextes hébergés) -->
+<div class="sheet-backdrop" id="confirmSheet" aria-hidden="true">
+  <div class="sheet" role="alertdialog" aria-modal="true" aria-labelledby="confirmMessage">
+    <div class="sheet-grip"></div>
+    <p id="confirmMessage" style="margin:0 0 20px;font-size:15px;line-height:1.5;"></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn btn-secondary" id="confirmNoBtn">Annuler</button>
+      <button type="button" class="btn btn-primary" id="confirmYesBtn">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ---------- Constantes ---------- */
+const KEY = 'budget-data-v2';
+const KEY_OLD = 'budget-data-v1';
+const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const MONTHS_SHORT = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+
+/* ---------- Utilitaires ---------- */
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const pad = n => String(n).padStart(2,'0');
+const sum = (arr,f) => arr.reduce((a,x)=>a+f(x),0);
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+const capitalize = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const uid = () => 'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+function monthKey(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1); }
+function fmtDate(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function todayStr(){ return fmtDate(new Date()); }
+function parseISO(s){ return new Date(s+'T00:00:00'); }
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function norm(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
+}
+function parseAmount(str){
+  if(typeof str === 'number') return str;
+  if(str == null) return NaN;
+  let s = String(str).trim().replace(/[\s ]/g,'').replace(/[€$£]/g,'');
+  if(s.includes(',') && s.includes('.')) s = s.replace(/\./g,'').replace(',','.');
+  else s = s.replace(',','.');
+  return parseFloat(s);
+}
+function amountToInput(n){ return String(n).replace('.', ','); }
+
+let moneyFmt = new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+function rebuildFormatters(){
+  moneyFmt = new Intl.NumberFormat('fr-FR', state.settings.showCents
+    ? {minimumFractionDigits:2, maximumFractionDigits:2}
+    : {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+function fmt(n){
+  if(!isFinite(n)) n = 0;
+  return moneyFmt.format(n) + ' ' + state.settings.currency;
+}
+const dayFmt = new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+function dayLabel(d){
+  const t = todayStr();
+  if(d === t) return "Aujourd'hui";
+  const y = new Date(); y.setDate(y.getDate()-1);
+  if(d === fmtDate(y)) return 'Hier';
+  return capitalize(dayFmt.format(parseISO(d)));
+}
+function monthLabelShort(mk){
+  const [y, m] = mk.split('-').map(Number);
+  return capitalize(MONTHS_SHORT[m - 1] || '?') + ' ' + y;
+}
+
+/* ---------- État & persistance ---------- */
+function defaultState(){
+  return {
+    version: 6,
+    settings: { currency:'€', showCents:true, theme:'auto', view:'expenses', defaultSavingsGoal:0 },
+    income: {},
+    periodStart: {},
+    expenses: [],
+    fixedCharges: [],
+    recurringIncomes: [],
+    savingsGoal: {},
+    savings: { opening: 0 },
+    installedAt: Date.now(),
+    lastExportAt: null,
+    reminderDismissedAt: null
+  };
+}
+
+function migrateRecurring(arr, fallbackName){
+  if(!Array.isArray(arr)) return [];
+  return arr.map(c => {
+    let amounts = Array.isArray(c.amounts) ? c.amounts
+      .filter(p => /^\d{4}-\d{2}$/.test(p.since || '') && Number(p.amount) >= 0)
+      .map(p => ({ since: p.since, amount: Number(p.amount) }))
+      .sort((a,b) => a.since < b.since ? -1 : 1) : [];
+    if(!amounts.length){
+      const since = /^\d{4}-\d{2}$/.test(c.since || '') ? c.since : '2000-01';
+      amounts = [{ since, amount: Number(c.amount) >= 0 ? Number(c.amount) : 0 }];
+    }
+    return {
+      id: c.id || uid(),
+      name: String(c.name || fallbackName),
+      start: /^\d{4}-\d{2}$/.test(c.start || '') ? c.start : amounts[0].since,
+      amounts
+    };
+  });
+}
+
+function migrate(raw){
+  const s = defaultState();
+  if(!raw || typeof raw !== 'object') return s;
+
+  if(Number(raw.installedAt) > 0) s.installedAt = Number(raw.installedAt);
+  if(Number(raw.lastExportAt) > 0) s.lastExportAt = Number(raw.lastExportAt);
+  if(Number(raw.reminderDismissedAt) > 0) s.reminderDismissedAt = Number(raw.reminderDismissedAt);
+
+  if(raw.settings && typeof raw.settings === 'object'){
+    if(raw.settings.currency) s.settings.currency = String(raw.settings.currency).slice(0,4) || '€';
+    if(typeof raw.settings.showCents === 'boolean') s.settings.showCents = raw.settings.showCents;
+    if(['auto','light','dark'].includes(raw.settings.theme)) s.settings.theme = raw.settings.theme;
+    let v = raw.settings.view;
+    if(v === 'budget') v = 'expenses';
+    if(['expenses','cashflow'].includes(v)) s.settings.view = v;
+    if(Number(raw.settings.defaultSavingsGoal) >= 0) s.settings.defaultSavingsGoal = Number(raw.settings.defaultSavingsGoal);
+  }
+  if(raw.income && typeof raw.income === 'object') s.income = raw.income;
+  if(raw.periodStart && typeof raw.periodStart === 'object'){
+    Object.keys(raw.periodStart).forEach(mk => {
+      if(/^\d{4}-\d{2}$/.test(mk) && /^\d{4}-\d{2}-\d{2}$/.test(raw.periodStart[mk] || '')){
+        s.periodStart[mk] = raw.periodStart[mk];
+      }
+    });
+  }
+  if(raw.savingsGoal && typeof raw.savingsGoal === 'object') s.savingsGoal = raw.savingsGoal;
+  if(raw.savings && typeof raw.savings === 'object' && Number(raw.savings.opening) >= 0) s.savings.opening = Number(raw.savings.opening);
+
+  s.fixedCharges = migrateRecurring(raw.fixedCharges, 'Charge');
+  s.recurringIncomes = migrateRecurring(raw.recurringIncomes, 'Revenu');
+
+  if(Array.isArray(raw.expenses)){
+    s.expenses = raw.expenses.map(e => {
+      let date = e.date;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(date || '')){
+        if(e.createdAt){
+          const d = new Date(e.createdAt);
+          const dk = monthKey(d);
+          date = (e.month && e.month !== dk) ? e.month + '-01' : fmtDate(d);
+        } else if(e.month){
+          date = e.month + '-01';
+        } else {
+          date = todayStr();
+        }
+      }
+      return {
+        id: e.id || uid(),
+        name: String(e.name || 'Dépense'),
+        amount: Math.round((Number(e.amount) || 0) * 100) / 100,
+        note: e.note ? String(e.note) : '',
+        date,
+        createdAt: e.createdAt || (Date.parse(date + 'T12:00:00') || Date.now())
+      };
+    });
+  }
+  return s;
+}
+
+function load(){
+  let raw = null;
+  try{ raw = localStorage.getItem(KEY) || localStorage.getItem(KEY_OLD); }
+  catch(e){ /* mode privé / stockage bloqué */ }
+  if(!raw) return defaultState();
+  try{ return migrate(JSON.parse(raw)); }
+  catch(e){ return defaultState(); }
+}
+
+let storageOk = true;
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }catch(e){
+    if(storageOk){
+      storageOk = false;
+      const w = document.getElementById('storageWarn');
+      if(w) w.hidden = false;
+    }
+  }
+  /* Même si le téléphone n'a pas pu enregistrer, la copie GitHub doit partir : c'est alors la seule. */
+  scheduleSync();
+}
+function probeStorage(){
+  try{
+    localStorage.setItem('__b_probe','1');
+    localStorage.removeItem('__b_probe');
+  }catch(e){
+    storageOk = false;
+    const w = document.getElementById('storageWarn');
+    if(w) w.hidden = false;
+  }
+}
+
+/* ---------- Sauvegarde automatique sur GitHub (dépôt privé) ---------- */
+/* Après chaque modification, une copie de l'état part dans le dépôt privé ecureuil-sauvegarde.
+   La clé (jeton GitHub) est rangée à part de l'état : elle n'est ni exportée ni sauvegardée,
+   et n'est envoyée qu'à api.github.com. Chaque envoi est un commit : GitHub garde l'historique. */
+const SYNC_KEY = 'ecureuil-sync';
+const SYNC_OWNER = 'SheldonChbr', SYNC_REPO = 'ecureuil-sauvegarde', SYNC_PATH = 'budget.json';
+const GH_API = 'https://api.github.com/repos/' + SYNC_OWNER + '/' + SYNC_REPO;
+const SYNC_DELAY = 3000;
+const DAY_MS = 24 * 3600 * 1000;
+
+let sync = loadSync();
+let syncTimer = null, syncBusy = false, syncRev = 0;
+
+function loadSync(){
+  try{
+    const s = JSON.parse(localStorage.getItem(SYNC_KEY) || 'null');
+    if(s && typeof s.token === 'string' && s.token) return s;
+  }catch(e){}
+  return null;
+}
+function storeSync(){
+  try{
+    if(sync) localStorage.setItem(SYNC_KEY, JSON.stringify(sync));
+    else localStorage.removeItem(SYNC_KEY);
+  }catch(e){}
+}
+
+function b64encode(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for(let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64decode(b64){
+  const bin = atob(String(b64).replace(/\s/g, ''));
+  const bytes = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function hashStr(s){ let h = 5381; for(let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); }
+
+/* Contenu sauvegardé : tout l'état sauf l'onglet affiché (sinon chaque changement d'onglet
+   créerait une sauvegarde). */
+function syncSnapshot(){
+  const copy = JSON.parse(JSON.stringify(state));
+  if(copy.settings) delete copy.settings.view;
+  return JSON.stringify(copy, null, 2);
+}
+
+async function gh(path, token, method, body){
+  const res = await fetch(GH_API + path, {
+    method: method || 'GET',
+    cache: 'no-store',
+    headers: Object.assign({
+      'Authorization': 'Bearer ' + token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    }, body ? { 'Content-Type': 'application/json' } : {}),
+    body: body || undefined
+  });
+  let data = null;
+  try{ data = await res.json(); }catch(e){}
+  return { status: res.status, data };
+}
+function ghError(status){
+  if(status === 401) return 'Clé refusée par GitHub (invalide ou expirée) : recrée une clé et réactive la sauvegarde.';
+  if(status === 403 || status === 404) return 'Cette clé n’a pas accès au dépôt privé « ' + SYNC_REPO + ' », ou il n’existe pas.';
+  return 'GitHub a répondu une erreur (' + status + ').';
+}
+
+/* Lit la sauvegarde distante : null s'il n'y en a pas encore. */
+async function readRemote(token){
+  const r = await gh('/contents/' + SYNC_PATH, token);
+  if(r.status === 404) return null;
+  if(r.status !== 200 || !r.data) throw new Error(ghError(r.status));
+  let data = null;
+  try{ data = JSON.parse(b64decode(r.data.content || '')); }catch(e){}
+  return { sha: r.data.sha, data };
+}
+/* Vérifie la clé et que le dépôt est bien privé, puis lit la sauvegarde existante. */
+async function syncProbe(token){
+  const repo = await gh('', token);
+  if(repo.status !== 200) throw new Error(ghError(repo.status));
+  if(!repo.data || repo.data.private !== true){
+    throw new Error('Le dépôt « ' + SYNC_REPO + ' » est public : passe-le en privé avant d’y sauvegarder ton budget.');
+  }
+  return readRemote(token);
+}
+
+function scheduleSync(){
+  if(!sync) return;
+  syncRev++;
+  sync.dirty = true;
+  storeSync();
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(pushSync, SYNC_DELAY);
+}
+
+async function pushSync(){
+  clearTimeout(syncTimer);
+  const s = sync;
+  if(!s || !s.dirty) return;
+  if(syncBusy){ syncTimer = setTimeout(pushSync, SYNC_DELAY); return; }
+  const snap = syncSnapshot();
+  const h = hashStr(snap);
+  if(h === s.lastHash){ s.dirty = false; storeSync(); renderSyncStatus(); return; }
+  const rev = syncRev;
+  syncBusy = true;
+  try{
+    const obj = JSON.parse(snap);
+    obj.backupAt = Date.now();
+    const content = b64encode(JSON.stringify(obj, null, 2));
+    const message = 'Sauvegarde du ' + new Date().toLocaleString('fr-FR');
+    const put = sha => gh('/contents/' + SYNC_PATH, s.token, 'PUT', JSON.stringify(Object.assign({ message, content }, sha ? { sha } : {})));
+    let r = await put(s.sha);
+    if(r.status === 409 || r.status === 422){
+      /* La version distante n'est pas celle qu'on croyait : on relit son identifiant et on réessaie. */
+      const remote = await readRemote(s.token);
+      r = await put(remote ? remote.sha : null);
+    }
+    if(r.status === 200 || r.status === 201){
+      if(r.data && r.data.content) s.sha = r.data.content.sha;
+      s.lastHash = h;
+      s.lastSyncAt = Date.now();
+      s.lastError = null;
+      if(rev === syncRev) s.dirty = false;
+    } else {
+      s.lastError = ghError(r.status);
+    }
+  }catch(e){
+    s.lastError = (e instanceof TypeError) ? 'Pas de connexion : la sauvegarde partira dès que possible.' : (e.message || 'Échec de la sauvegarde.');
+  }finally{
+    syncBusy = false;
+    if(sync === s){
+      storeSync();
+      renderSyncStatus();
+      if(s.dirty && !s.lastError) syncTimer = setTimeout(pushSync, SYNC_DELAY);
+    }
+  }
+}
+
+function agoFr(ts){
+  const m = Math.round((Date.now() - ts) / 60000);
+  if(m < 1) return 'à l’instant';
+  if(m < 60) return 'il y a ' + m + ' min';
+  const h = Math.round(m / 60);
+  if(h < 24) return 'il y a ' + h + ' h';
+  const d = Math.round(h / 24);
+  return 'il y a ' + d + ' jour' + (d > 1 ? 's' : '');
+}
+function renderSyncStatus(){
+  const el = document.getElementById('syncStatus');
+  if(!el) return;
+  $('#syncSetupBtn').hidden = !!sync;
+  $('#syncActions').hidden = !sync;
+  el.className = 'sync-status';
+  if(!sync){
+    el.textContent = 'Désactivée : tes données ne sont que sur ce téléphone.';
+  } else if(sync.lastError){
+    el.classList.add('bad');
+    el.textContent = '⚠ ' + sync.lastError + (sync.lastSyncAt ? ' Dernière réussie ' + agoFr(sync.lastSyncAt) + '.' : '');
+  } else if(sync.dirty){
+    el.textContent = 'Activée · envoi en cours…';
+  } else {
+    el.classList.add('ok');
+    el.textContent = '✓ Activée · dernière sauvegarde ' + (sync.lastSyncAt ? agoFr(sync.lastSyncAt) : 'en attente');
+  }
+}
+
+/* ---------- Dérivés ---------- */
+
+/* Bornes de périodes définies (une par « paye »), triées par date. */
+function periodStarts(){
+  return Object.keys(state.periodStart)
+    .filter(mk => /^\d{4}-\d{2}$/.test(mk) && /^\d{4}-\d{2}-\d{2}$/.test(state.periodStart[mk] || ''))
+    .map(mk => ({ mk, start: state.periodStart[mk] }))
+    .sort((a,b) => a.start < b.start ? -1 : 1);
+}
+
+/* Le mois budgétaire auquel appartient une date 'YYYY-MM-DD'. */
+function budgetMonthOf(dateStr){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(dateStr || '')) return '';
+  const ps = periodStarts();
+  if(!ps.length || dateStr < ps[0].start) return dateStr.slice(0,7);
+  let cur = ps[0].mk;
+  for(const p of ps){
+    if(dateStr >= p.start) cur = p.mk;
+    else break;
+  }
+  return cur;
+}
+
+/* Date de début par défaut pour la paye du mois mk : ~le 24 du mois précédent. */
+function defaultPayday(mk){
+  const [y, m] = mk.split('-').map(Number);
+  const d = new Date(y, m - 1, 1);
+  d.setMonth(d.getMonth() - 1);
+  d.setDate(24);
+  return fmtDate(d);
+}
+
+/* Libellé « 24 août – 23 sept. » de la période mk (si une borne est définie). */
+function periodRangeLabel(mk){
+  const start = state.periodStart[mk];
+  if(!start) return '';
+  const shortDay = d => d.getDate() + ' ' + MONTHS_SHORT[d.getMonth()].replace('.', '');
+  const s = parseISO(start);
+  const ps = periodStarts();
+  const idx = ps.findIndex(p => p.mk === mk);
+  if(idx >= 0 && idx < ps.length - 1){
+    const end = parseISO(ps[idx + 1].start);
+    end.setDate(end.getDate() - 1);
+    return shortDay(s) + ' – ' + shortDay(end);
+  }
+  return 'depuis le ' + shortDay(s);
+}
+
+function expensesFor(mk){ return state.expenses.filter(e => budgetMonthOf(e.date) === mk); }
+
+function recurringAmountAt(item, mk){
+  if(item.start && mk < item.start) return 0;
+  const ps = item.amounts || [];
+  if(!ps.length) return 0;
+  let amt = ps[0].amount;
+  for(const p of ps){
+    if(p.since <= mk) amt = p.amount;
+    else break;
+  }
+  return amt;
+}
+function recurringTotalAt(list, mk){ return sum(list, it => recurringAmountAt(it, mk)); }
+
+/* Définit le montant à partir du mois mk (efface les paliers ultérieurs -> « pour la suite »). */
+function setRecurringAmount(item, mk, value){
+  value = Math.max(0, Number(value) || 0);
+  if(item.start && mk < item.start) item.start = mk;
+  let ps = (item.amounts || []).filter(p => p.since < mk);
+  ps.push({ since: mk, amount: value });
+  ps.sort((a,b) => a.since < b.since ? -1 : 1);
+  if(ps.length >= 2 && ps[ps.length - 2].amount === value) ps.pop();
+  item.amounts = ps;
+}
+
+function savingsGoalAt(mk){
+  const o = state.savingsGoal[mk];
+  return (o != null && o !== '') ? Number(o) : (Number(state.settings.defaultSavingsGoal) || 0);
+}
+
+/* Bilan financier d'un mois. */
+function monthFinance(mk){
+  const salaire = Number(state.income[mk]) || 0;
+  const extra = recurringTotalAt(state.recurringIncomes, mk);
+  const revenus = salaire + extra;
+  const fixed = recurringTotalAt(state.fixedCharges, mk);
+  const spent = sum(expensesFor(mk), e => e.amount);
+  const goal = savingsGoalAt(mk);
+
+  const disponible = revenus - fixed;   // après charges fixes
+  const avant = disponible - spent;     // avant épargne
+
+  /* Chaque mois est indépendant : l'épargne du mois se réduit si on dépense plus que prévu,
+     et au-delà c'est un dépassement (reste négatif) — rien n'est pris sur les mois précédents. */
+  let epargne, reste;
+  if(avant >= goal){ epargne = goal; reste = avant - goal; }
+  else if(avant >= 0){ epargne = avant; reste = 0; }
+  else { epargne = 0; reste = avant; }
+
+  return { salaire, extra, revenus, fixed, spent, goal, disponible, avant, epargne, reste, depassement: reste < 0 ? -reste : 0 };
+}
+
+/* Mois « actifs » : ceux où une donnée a été saisie explicitement (salaire, objectif, ou
+   au moins une dépense). Les listes récurrentes sont des modèles : elles n'activent pas
+   un mois à elles seules, elles s'appliquent aux mois déjà actifs. */
+function collectMonths(){
+  const s = new Set();
+  Object.keys(state.income).forEach(m => s.add(m));
+  Object.keys(state.periodStart).forEach(m => s.add(m));
+  Object.keys(state.savingsGoal).forEach(m => s.add(m));
+  state.expenses.forEach(e => { const m = budgetMonthOf(e.date); if(m) s.add(m); });
+  return [...s].filter(m => /^\d{4}-\d{2}$/.test(m)).sort();
+}
+
+/* Ce qui a été mis de côté mois par mois, jusqu'à uptoMk (pas de cumul : chaque mois repart
+   de zéro). Seuls les mois avec un revenu comptent. */
+function savingsHistory(uptoMk){
+  const rows = [];
+  for(const m of collectMonths()){
+    if(uptoMk && m > uptoMk) break;
+    const f = monthFinance(m);
+    if(f.revenus <= 0) continue;
+    rows.push({ month: m, epargne: f.epargne, depassement: f.depassement });
+  }
+  return rows;
+}
+
+/* ---------- Variables d'interface ---------- */
+let state = load();
+function currentBudgetMonth(){ return budgetMonthOf(todayStr()) || todayStr().slice(0,7); }
+let currentMonth = parseISO(currentBudgetMonth() + '-01');
+let currentView = state.settings.view || 'expenses';
+let editingId = null;
+let expenseType = 'expense';
+let recurringKind = 'charge';
+let editingRecurringId = null;
+let searchTerm = '';
+
+/* ---------- Thème ---------- */
+function applyTheme(){
+  const t = state.settings.theme;
+  if(t === 'auto') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+}
+
+/* ---------- Rendu ---------- */
+function render(){
+  const mk = monthKey(currentMonth);
+  const isCurrent = mk === currentBudgetMonth();
+  const label = $('#monthLabel');
+  label.textContent = capitalize(MONTHS[currentMonth.getMonth()]) + ' ' + currentMonth.getFullYear();
+  label.classList.toggle('off', !isCurrent);
+
+  const range = periodRangeLabel(mk);
+  const pr = $('#periodRange');
+  pr.textContent = range;
+  pr.hidden = !range;
+
+  $$('#viewTabs button').forEach(b => b.classList.toggle('active', b.dataset.view === currentView));
+  $('#viewExpenses').hidden = currentView !== 'expenses';
+  $('#viewCashflow').hidden = currentView !== 'cashflow';
+
+  if(currentView === 'cashflow') renderCashflow(mk);
+  else renderExpensesTab(mk);
+}
+
+function renderExpensesTab(mk){
+  const f = monthFinance(mk);
+  const hero = $('#hero');
+  const over = f.revenus > 0 && f.depassement > 0;
+  hero.classList.toggle('over', over);
+  const moisNom = esc(MONTHS[currentMonth.getMonth()]);
+
+  if(f.revenus <= 0){
+    $('#heroLabel').textContent = 'Dépensé ce mois';
+    $('#heroAmount').textContent = fmt(f.spent);
+    $('#heroBar').style.width = '0%';
+    $('#heroBar').setAttribute('aria-valuenow', 0);
+    $('#heroSub').innerHTML = 'Renseigne tes revenus dans l’onglet <strong>Reste à vivre</strong> pour suivre le reste à dépenser.';
+  } else if(over){
+    $('#heroLabel').textContent = 'Dépassement';
+    $('#heroAmount').textContent = fmt(f.depassement);
+    $('#heroBar').style.width = '100%';
+    $('#heroBar').setAttribute('aria-valuenow', 100);
+    $('#heroSub').innerHTML = 'Tu as dépensé <strong>' + fmt(f.depassement) + '</strong> de plus que ce que tu pouvais en ' + moisNom + ', épargne comprise.';
+  } else {
+    $('#heroLabel').textContent = 'Reste à dépenser';
+    $('#heroAmount').textContent = fmt(f.reste);
+    const pct = f.disponible > 0 ? clamp((f.spent + f.epargne) / f.disponible * 100, 0, 100) : 0;
+    $('#heroBar').style.width = pct + '%';
+    $('#heroBar').setAttribute('aria-valuenow', Math.round(pct));
+    $('#heroSub').innerHTML = f.spent >= 0
+      ? '<strong>' + fmt(f.spent) + '</strong> dépensés en ' + moisNom
+      : '<strong>' + fmt(-f.spent) + '</strong> remboursés net en ' + moisNom;
+  }
+
+  renderExpenses();
+}
+
+function renderExpenses(){
+  const mk = monthKey(currentMonth);
+  const monthExp = expensesFor(mk);
+  let list = monthExp.slice();
+
+  if(searchTerm){
+    const q = norm(searchTerm);
+    list = list.filter(e => norm(e.name).includes(q) || norm(e.note || '').includes(q));
+  }
+
+  $('#expenseCount').textContent = list.length
+    ? list.length + ' · ' + fmt(sum(list, e => e.amount))
+    : '';
+
+  const box = $('#expenseList');
+  if(list.length === 0){
+    box.innerHTML = '<div class="empty">' +
+      (monthExp.length ? 'Aucune dépense ne correspond à ta recherche.' : 'Pas encore de dépense ce mois-ci.') +
+      '</div>';
+    return;
+  }
+
+  const groups = {};
+  list.forEach(e => { (groups[e.date] = groups[e.date] || []).push(e); });
+  const days = Object.keys(groups).sort().reverse();
+
+  box.innerHTML = days.map(d => {
+    const items = groups[d].sort((a,b) => b.createdAt - a.createdAt);
+    const rows = items.map(e => {
+      const isRefund = e.amount < 0;
+      const amtText = isRefund ? '+' + fmt(Math.abs(e.amount)) : fmt(e.amount);
+      return '<div class="expense-row" data-id="' + esc(e.id) + '" tabindex="0" role="button" aria-label="' + esc(e.name + ', ' + amtText) + ', modifier">'
+        + '<div class="expense-info">'
+          + '<p class="expense-name">' + esc(e.name) + '</p>'
+          + (e.note ? '<p class="expense-meta">' + esc(e.note) + '</p>' : '')
+        + '</div>'
+        + '<span class="expense-amount' + (isRefund ? ' refund' : '') + '">' + amtText + '</span>'
+        + '<button class="expense-del" data-del type="button" aria-label="Supprimer">✕</button>'
+      + '</div>';
+    }).join('');
+    return '<div class="day-group">'
+      + '<div class="day-head"><span>' + esc(dayLabel(d)) + '</span><span>' + fmt(sum(items, e => e.amount)) + '</span></div>'
+      + rows
+    + '</div>';
+  }).join('');
+}
+
+/* ---------- Rendu : Reste à vivre ---------- */
+function renderCashflow(mk){
+  const f = monthFinance(mk);
+  const hist = savingsHistory(mk);
+  const monthName = MONTHS[currentMonth.getMonth()] + ' ' + currentMonth.getFullYear();
+  const noIncome = f.revenus <= 0;
+
+  /* Héros : reste à vivre = revenus − charges fixes */
+  const hero = $('#cfHero');
+  const negatif = !noIncome && f.disponible < 0;
+  hero.classList.toggle('over', negatif);
+  if(noIncome){
+    $('#cfHeroLabel').textContent = 'Reste à vivre';
+    $('#cfHeroAmount').textContent = fmt(0);
+    $('#cfHeroBar').style.width = '0%';
+    $('#cfHeroBar').setAttribute('aria-valuenow', 0);
+    $('#cfHeroSub').innerHTML = 'Renseigne ton <strong>salaire</strong> (⚙ ou « modifier ») ou un revenu complémentaire.';
+  } else {
+    $('#cfHeroLabel').textContent = 'Reste à vivre';
+    $('#cfHeroAmount').textContent = fmt(f.disponible);
+    const pct = f.disponible > 0 ? clamp((f.spent + f.epargne) / f.disponible * 100, 0, 100) : 0;
+    $('#cfHeroBar').style.width = pct + '%';
+    $('#cfHeroBar').setAttribute('aria-valuenow', Math.round(pct));
+    $('#cfHeroSub').innerHTML = negatif
+      ? 'Tes charges fixes dépassent tes revenus.'
+      : '<strong>' + fmt(f.revenus) + '</strong> de revenus − <strong>' + fmt(f.fixed) + '</strong> de charges fixes';
+  }
+
+  /* Carte mis de côté : uniquement le mois affiché (pas de cumul) */
+  const scTotal = $('#scTotal');
+  const scDelta = $('#scDelta');
+  scTotal.textContent = fmt(noIncome ? 0 : f.epargne);
+  scTotal.classList.remove('neg');
+  if(noIncome){
+    scDelta.textContent = 'Renseigne tes revenus pour ' + monthName + '.';
+    scDelta.className = 'sc-delta';
+  } else if(f.goal <= 0){
+    scDelta.textContent = 'Aucun objectif d’épargne ce mois-ci.';
+    scDelta.className = 'sc-delta';
+  } else if(f.depassement > 0){
+    scDelta.textContent = 'Objectif de ' + fmt(f.goal) + ' non tenu · dépassement de ' + fmt(f.depassement);
+    scDelta.className = 'sc-delta neg';
+  } else if(f.epargne < f.goal){
+    scDelta.textContent = 'Sur un objectif de ' + fmt(f.goal) + ' — réduit par les dépenses';
+    scDelta.className = 'sc-delta neg';
+  } else {
+    scDelta.textContent = 'Objectif de ' + fmt(f.goal) + ' tenu pour l’instant';
+    scDelta.className = 'sc-delta pos';
+  }
+
+  /* Détail du mois (cascade) */
+  $('#cfDetailTitle').textContent = 'Détail · ' + capitalize(monthName);
+  const rows = [];
+  rows.push(flowRow('Salaire', f.salaire, 'pos', 'salaire', 'modifier'));
+  if(f.extra > 0 || state.recurringIncomes.length){
+    rows.push(flowRow('Revenus complémentaires', f.extra, 'pos', 'extra', 'gérer'));
+  }
+  rows.push(flowRow('Charges fixes', -f.fixed, 'neg', 'charges', 'gérer'));
+  rows.push('<div class="flow-row subtotal"><span class="fr-left">Reste à vivre</span><span class="fr-val">' + fmt(f.disponible) + '</span></div>');
+  rows.push(flowRow('Dépenses du mois', -f.spent, f.spent >= 0 ? 'neg' : 'pos', 'depenses', 'voir'));
+  rows.push(flowRow('Objectif d’épargne', -f.goal, '', 'goal', 'modifier'));
+  if(f.epargne !== f.goal){
+    rows.push(flowRowSub(f.epargne > 0 ? 'Épargne réelle (plafonnée)' : 'Épargne impossible ce mois', -f.epargne));
+  }
+  rows.push('<div class="flow-row total"><span class="fr-left">' + (f.reste < 0 ? 'Dépassement' : 'Reste à dépenser') + '</span><span class="fr-val ' +
+    (f.reste > 0 ? 'pos' : f.reste < 0 ? 'neg' : '') + '">' + (f.reste < 0 ? '−' + fmt(-f.reste) : fmt(f.reste)) + '</span></div>');
+  $('#cfFlow').innerHTML = rows.join('');
+
+  renderRecurringList('income');
+  renderRecurringList('charge');
+
+  /* Historique : ce qui a été mis de côté chaque mois, sans total cumulé */
+  const hb = $('#cfHistory');
+  if(hist.length === 0){
+    hb.innerHTML = '<div class="empty">Renseigne un revenu pour voir ce que tu mets de côté chaque mois.</div>';
+  } else {
+    hb.innerHTML = hist.slice().reverse().map(r => {
+      const cur = r.month === mk;
+      const val = r.depassement > 0
+        ? '<span class="h-impact neg">dépassement de ' + fmt(r.depassement) + '</span>'
+        : '<span class="h-impact ' + (r.epargne > 0 ? 'pos' : '') + '">' + fmt(r.epargne) + '</span>';
+      return '<div class="hist-row' + (cur ? ' cur' : '') + '">'
+        + '<span class="h-month">' + esc(monthLabelShort(r.month)) + '</span>' + val
+      + '</div>';
+    }).join('');
+  }
+}
+
+function renderRecurringList(kind){
+  const isCharge = kind === 'charge';
+  const list = isCharge ? state.fixedCharges : state.recurringIncomes;
+  const mk = monthKey(currentMonth);
+  const listEl = isCharge ? $('#cfChargeList') : $('#cfIncomeList');
+  const totalEl = isCharge ? $('#cfChargesTotal') : $('#cfIncomesTotal');
+  const total = recurringTotalAt(list, mk);
+
+  totalEl.textContent = list.length ? (isCharge ? '−' : '+') + fmt(total) + ' / mois' : '';
+
+  if(list.length === 0){
+    listEl.innerHTML = '<div class="empty">' + (isCharge
+      ? 'Aucune charge fixe.<br>Ajoute tes prélèvements récurrents (loyer, énergie, abonnements, assurances…).'
+      : 'Aucun revenu complémentaire.<br>Ajoute tes revenus récurrents en plus du salaire (allocations, pension, loyer perçu…).') + '</div>';
+    return;
+  }
+
+  const ordered = list.slice().sort((a,b) => recurringAmountAt(b, mk) - recurringAmountAt(a, mk));
+  listEl.innerHTML = ordered.map(it => {
+    const amt = recurringAmountAt(it, mk);
+    const inactive = it.start && mk < it.start;
+    const meta = inactive
+      ? 'À partir de ' + esc(monthLabelShort(it.start))
+      : (it.amounts.length > 1 ? 'Montant au ' + esc(MONTHS[currentMonth.getMonth()]) : 'Chaque mois');
+    return '<div class="rec-row" data-id="' + esc(it.id) + '" data-kind="' + kind + '" tabindex="0" role="button" aria-label="' + esc(it.name + ', ' + fmt(amt)) + ', modifier">'
+      + '<div class="rec-info">'
+        + '<p class="rec-name">' + esc(it.name) + '</p>'
+        + '<p class="rec-meta">' + meta + '</p>'
+      + '</div>'
+      + '<span class="rec-amount' + (isCharge ? '' : ' pos') + '">' + (isCharge ? '−' : '+') + fmt(amt) + '</span>'
+    + '</div>';
+  }).join('');
+}
+
+function flowRow(label, value, cls, editKey, editLabel){
+  const v = (value > 0 ? '+' : value < 0 ? '−' : '') + fmt(Math.abs(value));
+  return '<div class="flow-row">'
+    + '<span class="fr-left"><span class="txt">' + esc(label) + '</span></span>'
+    + (editKey ? '<button type="button" class="fr-edit" data-edit="' + editKey + '">' + esc(editLabel || 'modifier') + '</button>' : '')
+    + '<span class="fr-val ' + cls + '">' + v + '</span>'
+  + '</div>';
+}
+function flowRowSub(label, value){
+  return '<div class="flow-row sub">'
+    + '<span class="fr-left"><span class="txt">' + esc(label) + '</span></span>'
+    + '<span class="fr-val">' + (value > 0 ? '+' : value < 0 ? '−' : '') + fmt(Math.abs(value)) + '</span>'
+  + '</div>';
+}
+
+/* ---------- Feuilles (modales) ---------- */
+let activeSheet = null;
+let lastFocused = null;
+
+function openSheet(el, focusSel){
+  lastFocused = document.activeElement;
+  el.classList.add('show');
+  el.setAttribute('aria-hidden','false');
+  activeSheet = el;
+  document.body.style.overflow = 'hidden';
+  const target = focusSel ? el.querySelector(focusSel) : null;
+  if(target) setTimeout(() => target.focus(), 60);
+}
+function closeSheet(el){
+  el.classList.remove('show');
+  el.setAttribute('aria-hidden','true');
+  /* Des feuilles peuvent être empilées (ex : Réglages → Salaire) : celle du dessous redevient active. */
+  const open = $$('.sheet-backdrop.show');
+  activeSheet = open.length ? open[open.length - 1] : null;
+  document.body.style.overflow = activeSheet ? 'hidden' : '';
+  if(lastFocused && document.contains(lastFocused)) lastFocused.focus();
+}
+
+document.addEventListener('keydown', e => {
+  if(!activeSheet) return;
+  if(e.key === 'Escape'){ e.preventDefault(); closeSheet(activeSheet); return; }
+  if(e.key === 'Tab'){
+    const foci = Array.from(activeSheet.querySelectorAll(
+      'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+    )).filter(el => el.offsetParent !== null || el === document.activeElement);
+    if(!foci.length) return;
+    const first = foci[0], last = foci[foci.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+['expenseSheet','recurringSheet','goalSheet','settingsSheet','salarySheet','syncSheet','confirmSheet'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('click', e => { if(e.target === el) closeSheet(el); });
+});
+
+/* ---------- Confirmation (remplace window.confirm) ---------- */
+let confirmCallback = null, confirmNoCallback = null;
+/* opts : confirmLabel, danger, cancelLabel, onNo (action du 2e bouton, quand ce n'est pas un simple « Annuler »). */
+function askConfirm(message, onYes, opts){
+  opts = opts || {};
+  $('#confirmMessage').textContent = message;
+  const yesBtn = $('#confirmYesBtn');
+  yesBtn.textContent = opts.confirmLabel || 'Confirmer';
+  yesBtn.classList.toggle('danger', !!opts.danger);
+  $('#confirmNoBtn').textContent = opts.cancelLabel || 'Annuler';
+  confirmCallback = onYes;
+  confirmNoCallback = opts.onNo || null;
+  openSheet($('#confirmSheet'), '#confirmNoBtn');
+}
+$('#confirmYesBtn').addEventListener('click', () => {
+  const cb = confirmCallback;
+  confirmCallback = confirmNoCallback = null;
+  closeSheet($('#confirmSheet'));
+  if(cb) cb();
+});
+$('#confirmNoBtn').addEventListener('click', () => {
+  const cb = confirmNoCallback;
+  confirmCallback = confirmNoCallback = null;
+  closeSheet($('#confirmSheet'));
+  if(cb) cb();
+});
+
+/* ---------- Toast / annulation ---------- */
+let toastTimer = null;
+function showToast(msg, actionLabel, fn){
+  clearTimeout(toastTimer);
+  const t = $('#toast');
+  t.innerHTML = '<span>' + esc(msg) + '</span>' +
+    (actionLabel ? '<button type="button" id="toastAction">' + esc(actionLabel) + '</button>' : '');
+  t.classList.add('show');
+  if(actionLabel){
+    $('#toastAction').addEventListener('click', () => { fn(); hideToast(); });
+  }
+  toastTimer = setTimeout(hideToast, 5000);
+}
+function hideToast(){ $('#toast').classList.remove('show'); }
+
+/* ---------- Feuille dépense ---------- */
+function defaultDateForView(){
+  const mk = monthKey(currentMonth);
+  if(mk === currentBudgetMonth()) return todayStr();
+  return state.periodStart[mk] || (mk + '-01');
+}
+
+function renderExpType(){
+  $$('#expType button').forEach(b => {
+    const on = b.dataset.type === expenseType;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on);
+  });
+}
+$('#expType').addEventListener('click', e => {
+  const b = e.target.closest('button[data-type]');
+  if(!b) return;
+  expenseType = b.dataset.type;
+  renderExpType();
+});
+
+function openExpenseSheet(id){
+  editingId = id || null;
+  const e = id ? state.expenses.find(x => x.id === id) : null;
+
+  expenseType = (e && e.amount < 0) ? 'refund' : 'expense';
+  renderExpType();
+  $('#expenseTitle').textContent = e ? 'Modifier la dépense' : 'Nouvelle dépense';
+  $('#saveExpense').textContent = e ? 'Enregistrer' : 'Ajouter';
+  $('#expName').value = e ? e.name : '';
+  $('#expAmount').value = e ? amountToInput(Math.abs(e.amount)) : '';
+  $('#expNote').value = e && e.note ? e.note : '';
+  $('#expDate').value = e ? e.date : defaultDateForView();
+  $('#deleteExpense').hidden = !e;
+  $('#expError').classList.remove('show');
+  $('#expError').textContent = '';
+
+  openSheet($('#expenseSheet'), '#expName');
+}
+
+$('#addExpenseBtn').addEventListener('click', () => openExpenseSheet());
+$('#cancelExpense').addEventListener('click', () => closeSheet($('#expenseSheet')));
+
+$('#expenseForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#expError');
+  const showErr = m => { err.textContent = m; err.classList.add('show'); };
+
+  const name = $('#expName').value.trim();
+  const amount = parseAmount($('#expAmount').value);
+  const date = $('#expDate').value || todayStr();
+  const note = $('#expNote').value.trim();
+
+  if(!name) return showErr('Ajoute une description.');
+  if(!isFinite(amount) || amount <= 0) return showErr('Le montant doit être supérieur à 0.');
+
+  const signed = expenseType === 'refund' ? -amount : amount;
+  const rounded = Math.round(signed * 100) / 100;
+  if(editingId){
+    const x = state.expenses.find(v => v.id === editingId);
+    if(x) Object.assign(x, { name, amount:rounded, note, date });
+  } else {
+    state.expenses.push({ id:uid(), name, amount:rounded, note, date, createdAt:Date.now() });
+  }
+  save();
+  closeSheet($('#expenseSheet'));
+
+  currentMonth = parseISO(budgetMonthOf(date) + '-01');
+  render();
+});
+
+$('#deleteExpense').addEventListener('click', () => {
+  if(!editingId) return;
+  const id = editingId;
+  closeSheet($('#expenseSheet'));
+  deleteExpense(id);
+});
+
+function deleteExpense(id){
+  const idx = state.expenses.findIndex(x => x.id === id);
+  if(idx < 0) return;
+  const removed = state.expenses.splice(idx, 1)[0];
+  save();
+  render();
+  showToast('Dépense supprimée', 'Annuler', () => {
+    state.expenses.push(removed);
+    save();
+    render();
+  });
+}
+
+$('#expenseList').addEventListener('click', e => {
+  const row = e.target.closest('.expense-row');
+  if(!row) return;
+  if(e.target.closest('[data-del]')){ deleteExpense(row.dataset.id); return; }
+  openExpenseSheet(row.dataset.id);
+});
+$('#expenseList').addEventListener('keydown', e => {
+  const row = e.target.closest('.expense-row');
+  if(!row || e.target !== row) return;
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openExpenseSheet(row.dataset.id); }
+});
+
+/* ---------- Recherche ---------- */
+let searchDebounce = null;
+$('#searchInput').addEventListener('input', e => {
+  clearTimeout(searchDebounce);
+  const v = e.target.value;
+  searchDebounce = setTimeout(() => { searchTerm = v; renderExpenses(); }, 140);
+});
+
+/* ---------- Navigation mois ---------- */
+$('#prevMonth').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() - 1); render(); });
+$('#nextMonth').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() + 1); render(); });
+$('#monthLabel').addEventListener('click', () => { currentMonth = parseISO(currentBudgetMonth() + '-01'); render(); });
+
+/* ---------- Onglets ---------- */
+function switchView(v){
+  currentView = v;
+  state.settings.view = v;
+  save();
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#viewTabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-view]');
+  if(b) switchView(b.dataset.view);
+});
+
+/* ---------- Feuille : charge fixe / revenu ---------- */
+function recListFor(kind){ return kind === 'charge' ? state.fixedCharges : state.recurringIncomes; }
+
+function openRecurringSheet(kind, id){
+  recurringKind = kind;
+  editingRecurringId = id || null;
+  const isCharge = kind === 'charge';
+  const item = id ? recListFor(kind).find(x => x.id === id) : null;
+  const mk = monthKey(currentMonth);
+
+  $('#recTitle').textContent = item
+    ? (isCharge ? 'Modifier la charge' : 'Modifier le revenu')
+    : (isCharge ? 'Nouvelle charge fixe' : 'Nouveau revenu complémentaire');
+  $('#recName').placeholder = isCharge ? 'Ex : loyer, EDF, box, assurance…' : 'Ex : CAF, pension, loyer perçu…';
+  $('#recName').value = item ? item.name : '';
+  $('#recAmount').value = item ? amountToInput(recurringAmountAt(item, mk)) : '';
+  $('#recStart').value = item ? (item.start || mk) : mk;
+  $('#recStartField').style.display = item ? 'none' : '';
+  $('#recHint').textContent = item
+    ? 'La modification s’applique à partir de ' + capitalize(MONTHS[currentMonth.getMonth()]) + ' ' + currentMonth.getFullYear() + ' et pour les mois suivants (les mois passés gardent l’ancien montant).'
+    : (isCharge ? 'Déduite chaque mois automatiquement.' : 'Ajouté chaque mois automatiquement, en plus du salaire.');
+  $('#recSave').textContent = item ? 'Enregistrer' : 'Ajouter';
+  $('#recDelete').hidden = !item;
+  $('#recDelete').textContent = isCharge ? 'Supprimer cette charge' : 'Supprimer ce revenu';
+  $('#recError').classList.remove('show');
+  $('#recError').textContent = '';
+
+  openSheet($('#recurringSheet'), '#recName');
+}
+
+$('#addChargeBtn').addEventListener('click', () => openRecurringSheet('charge'));
+$('#addIncomeBtn').addEventListener('click', () => openRecurringSheet('income'));
+$('#cancelRec').addEventListener('click', () => closeSheet($('#recurringSheet')));
+
+function onRecRowClick(e){
+  const row = e.target.closest('.rec-row');
+  if(row) openRecurringSheet(row.dataset.kind, row.dataset.id);
+}
+function onRecRowKey(e){
+  const row = e.target.closest('.rec-row');
+  if(row && e.target === row && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openRecurringSheet(row.dataset.kind, row.dataset.id); }
+}
+$('#cfChargeList').addEventListener('click', onRecRowClick);
+$('#cfChargeList').addEventListener('keydown', onRecRowKey);
+$('#cfIncomeList').addEventListener('click', onRecRowClick);
+$('#cfIncomeList').addEventListener('keydown', onRecRowKey);
+
+$('#recForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#recError');
+  const showErr = m => { err.textContent = m; err.classList.add('show'); };
+  const name = $('#recName').value.trim();
+  const amount = parseAmount($('#recAmount').value);
+  const mk = monthKey(currentMonth);
+
+  if(!name) return showErr('Donne un nom.');
+  if(!isFinite(amount) || amount < 0) return showErr('Montant invalide.');
+
+  const list = recListFor(recurringKind);
+  if(editingRecurringId){
+    const item = list.find(x => x.id === editingRecurringId);
+    if(item){ item.name = name; setRecurringAmount(item, mk, amount); }
+  } else {
+    let start = $('#recStart').value;
+    if(!/^\d{4}-\d{2}$/.test(start)) start = mk;
+    list.push({ id: uid(), name, start, amounts: [{ since: start, amount: Math.round(amount * 100) / 100 }] });
+  }
+  save();
+  closeSheet($('#recurringSheet'));
+  render();
+});
+
+$('#recDelete').addEventListener('click', () => {
+  if(!editingRecurringId) return;
+  const isCharge = recurringKind === 'charge';
+  const list = recListFor(recurringKind);
+  const item = list.find(x => x.id === editingRecurringId);
+  if(!item) return;
+  const msg = isCharge
+    ? 'Supprimer la charge « ' + item.name + ' » ? Elle ne sera plus déduite, ce mois comme les précédents.'
+    : 'Supprimer le revenu « ' + item.name + ' » ? Il ne sera plus compté, ce mois comme les précédents.';
+  askConfirm(msg, () => {
+    if(isCharge) state.fixedCharges = state.fixedCharges.filter(x => x.id !== editingRecurringId);
+    else state.recurringIncomes = state.recurringIncomes.filter(x => x.id !== editingRecurringId);
+    save();
+    closeSheet($('#recurringSheet'));
+    render();
+  }, { danger:true, confirmLabel:'Supprimer' });
+});
+
+/* ---------- Feuille : objectif d'épargne ---------- */
+function openGoalSheet(){
+  const mk = monthKey(currentMonth);
+  const hasOv = state.savingsGoal[mk] != null && state.savingsGoal[mk] !== '';
+  $('#goalAmountLabel').textContent = 'Montant pour ' + MONTHS[currentMonth.getMonth()] + ' ' + currentMonth.getFullYear();
+  $('#goalAmount').value = amountToInput(savingsGoalAt(mk));
+  $('#goalDefault').checked = false;
+  $('#resetGoal').hidden = !hasOv;
+  $('#goalError').classList.remove('show');
+  $('#goalError').textContent = '';
+  openSheet($('#goalSheet'), '#goalAmount');
+}
+
+$('#cancelGoal').addEventListener('click', () => closeSheet($('#goalSheet')));
+
+$('#goalForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#goalError');
+  const v = parseAmount($('#goalAmount').value);
+  if(!isFinite(v) || v < 0){ err.textContent = 'Montant invalide.'; err.classList.add('show'); return; }
+  const mk = monthKey(currentMonth);
+  const val = Math.round(v * 100) / 100;
+  state.savingsGoal[mk] = val;
+  if($('#goalDefault').checked) state.settings.defaultSavingsGoal = val;
+  save();
+  closeSheet($('#goalSheet'));
+  render();
+});
+
+$('#resetGoal').addEventListener('click', () => {
+  const mk = monthKey(currentMonth);
+  delete state.savingsGoal[mk];
+  save();
+  closeSheet($('#goalSheet'));
+  render();
+});
+
+/* Boutons de la cascade */
+$('#cfFlow').addEventListener('click', e => {
+  const b = e.target.closest('[data-edit]');
+  if(!b) return;
+  const k = b.dataset.edit;
+  if(k === 'salaire'){ openSalarySheet(monthKey(currentMonth)); }
+  else if(k === 'goal'){ openGoalSheet(); }
+  else if(k === 'charges'){ $('#cfChargesSection').scrollIntoView({ behavior:'smooth', block:'start' }); }
+  else if(k === 'extra'){ $('#cfIncomesSection').scrollIntoView({ behavior:'smooth', block:'start' }); }
+  else if(k === 'depenses'){ switchView('expenses'); }
+});
+
+/* ---------- Feuille : salaire ---------- */
+/* Rien n'est enregistré avant « Enregistrer » : une erreur se corrige en annulant, sans
+   laisser une date modifiée en douce. Le mois concerné se choisit dans la feuille elle-même. */
+let salaryMk = null;
+function monthLong(mk){ const [y, m] = mk.split('-').map(Number); return MONTHS[m - 1] + ' ' + y; }
+function shortDayFr(iso){ const d = parseISO(iso); return d.getDate() + ' ' + MONTHS_SHORT[d.getMonth()].replace('.', ''); }
+
+/* Débuts de mois déjà connus juste avant et juste après mk. */
+function neighborStarts(mk){
+  let prev = null, next = null;
+  Object.keys(state.periodStart).forEach(k => {
+    const s = state.periodStart[k];
+    if(k === mk || !/^\d{4}-\d{2}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(s || '')) return;
+    if(k < mk && (!prev || k > prev.mk)) prev = { mk:k, start:s };
+    if(k > mk && (!next || k < next.mk)) next = { mk:k, start:s };
+  });
+  return { prev, next };
+}
+
+/* Chaque paye doit tomber après celle du mois précédent et avant celle du mois suivant. */
+function salaryProblem(mk, d){
+  if(!/^\d{4}-\d{2}$/.test(mk || '')) return 'Choisis le mois concerné.';
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d || '')) return 'Indique la date à laquelle tu as reçu ce salaire.';
+  const { prev, next } = neighborStarts(mk);
+  if(prev && d <= prev.start) return capitalize(monthLong(prev.mk)) + ' commence déjà le ' + shortDayFr(prev.start) + ' : la paye de ' + monthLong(mk) + ' doit être reçue après.';
+  if(next && d >= next.start) return capitalize(monthLong(next.mk)) + ' commence le ' + shortDayFr(next.start) + ' : la paye de ' + monthLong(mk) + ' doit être reçue avant.';
+  return null;
+}
+
+function renderSalaryPreview(){
+  const mk = $('#salMonth').value, d = $('#salDate').value;
+  const p = $('#salPreview');
+  const problem = salaryProblem(mk, d);
+  p.classList.toggle('bad', !!problem);
+  if(problem){ p.textContent = problem; return; }
+  const { next } = neighborStarts(mk);
+  let txt = capitalize(monthLong(mk)) + ' : ';
+  if(next){
+    const end = parseISO(next.start); end.setDate(end.getDate() - 1);
+    txt += 'du ' + shortDayFr(d) + ' au ' + shortDayFr(fmtDate(end));
+  } else {
+    txt += 'à partir du ' + shortDayFr(d) + ', jusqu’à ta prochaine paye';
+  }
+  const old = state.periodStart[mk];
+  if(old && old !== d) txt += ' (au lieu du ' + shortDayFr(old) + ')';
+  p.textContent = txt + '.';
+}
+
+function fillSalaryFields(mk){
+  salaryMk = mk;
+  $('#salMonth').value = mk;
+  $('#salAmount').value = state.income[mk] ? amountToInput(state.income[mk]) : '';
+  $('#salDate').value = state.periodStart[mk] || defaultPayday(mk);
+  $('#deleteSalary').hidden = !(state.income[mk] != null || state.periodStart[mk]);
+  $('#salError').classList.remove('show');
+  $('#salError').textContent = '';
+  renderSalaryPreview();
+}
+
+function openSalarySheet(mk){
+  fillSalaryFields(mk || monthKey(currentMonth));
+  openSheet($('#salarySheet'), '#salAmount');
+}
+
+$('#salMonth').addEventListener('change', e => {
+  if(/^\d{4}-\d{2}$/.test(e.target.value)) fillSalaryFields(e.target.value);
+  else renderSalaryPreview();
+});
+$('#salDate').addEventListener('input', renderSalaryPreview);
+$('#salDate').addEventListener('change', renderSalaryPreview);
+$('#cancelSalary').addEventListener('click', () => closeSheet($('#salarySheet')));
+
+$('#salaryForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#salError');
+  const showErr = m => { err.textContent = m; err.classList.add('show'); };
+  const mk = $('#salMonth').value, d = $('#salDate').value;
+  const v = parseAmount($('#salAmount').value);
+  if(!isFinite(v) || v <= 0) return showErr('Indique un montant supérieur à 0.');
+  const problem = salaryProblem(mk, d);
+  if(problem) return showErr(problem);
+  state.income[mk] = Math.round(v * 100) / 100;
+  state.periodStart[mk] = d;
+  save();
+  closeSheet($('#salarySheet'));
+  renderSalarySummary();
+  render();
+  showToast('Salaire de ' + monthLong(mk) + ' enregistré');
+});
+
+$('#deleteSalary').addEventListener('click', () => {
+  const mk = salaryMk;
+  askConfirm('Supprimer le salaire de ' + monthLong(mk) + ' ? Sa date de début de mois sera aussi retirée.', () => {
+    delete state.income[mk];
+    delete state.periodStart[mk];
+    save();
+    closeSheet($('#salarySheet'));
+    renderSalarySummary();
+    render();
+  }, { danger:true, confirmLabel:'Supprimer' });
+});
+
+/* ---------- Feuille réglages ---------- */
+function renderSalarySummary(){
+  const mk = monthKey(currentMonth);
+  const amt = state.income[mk], start = state.periodStart[mk];
+  const label = '<strong>' + esc(capitalize(monthLong(mk))) + '</strong> : ';
+  $('#salSummary').innerHTML = amt != null
+    ? label + fmt(amt) + (start ? ' <span class="muted">· reçu le ' + esc(shortDayFr(start)) + '</span>' : '')
+    : label + '<span class="muted">pas encore de salaire</span>';
+}
+function openSettings(){
+  renderSalarySummary();
+  $('#currencyInput').value = state.settings.currency;
+  $('#themeSelect').value = state.settings.theme;
+  $('#centsToggle').checked = state.settings.showCents;
+  $('#defaultGoalInput').value = state.settings.defaultSavingsGoal ? amountToInput(state.settings.defaultSavingsGoal) : '';
+  renderSyncStatus();
+  openSheet($('#settingsSheet'));
+}
+
+/* ---------- Activer / restaurer / désactiver la sauvegarde automatique ---------- */
+function openSyncSheet(){
+  $('#syncToken').value = '';
+  $('#syncError').classList.remove('show');
+  $('#syncError').textContent = '';
+  $('#saveSync').disabled = false;
+  $('#saveSync').textContent = 'Activer';
+  openSheet($('#syncSheet'), '#syncToken');
+}
+$('#syncSetupBtn').addEventListener('click', openSyncSheet);
+$('#cancelSync').addEventListener('click', () => closeSheet($('#syncSheet')));
+
+function remoteLabel(remote){
+  const n = remote.data && Array.isArray(remote.data.expenses) ? remote.data.expenses.length : 0;
+  const when = remote.data && remote.data.backupAt ? ' du ' + new Date(remote.data.backupAt).toLocaleDateString('fr-FR') : '';
+  return { n, when };
+}
+
+/* restore = true : ce téléphone reprend la sauvegarde GitHub ; false : ce téléphone l'écrase. */
+function activateSync(token, remote, restore){
+  clearTimeout(syncTimer);
+  sync = { token, sha: remote ? remote.sha : null, dirty: false, lastHash: null, lastSyncAt: null, lastError: null, activatedAt: Date.now() };
+  if(restore && remote && remote.data){
+    const view = currentView;
+    state = migrate(remote.data);
+    state.settings.view = view;
+    currentMonth = parseISO(currentBudgetMonth() + '-01');
+    searchTerm = ''; $('#searchInput').value = '';
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    sync.lastHash = hashStr(syncSnapshot());
+    sync.lastSyncAt = remote.data.backupAt || Date.now();
+    storeSync();
+    rebuildFormatters(); applyTheme(); render(); renderSalarySummary(); hideExportReminder(); checkExportReminder();
+    showToast('Données restaurées depuis GitHub');
+  } else {
+    storeSync();
+    scheduleSync();
+    pushSync();
+    showToast('Sauvegarde automatique activée');
+  }
+  renderSyncStatus();
+}
+
+$('#syncForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = $('#syncError');
+  const showErr = m => { err.textContent = m; err.classList.add('show'); };
+  const token = $('#syncToken').value.trim();
+  if(!/^(github_pat_|ghp_)\w{20,}$/.test(token)) return showErr('Ça ne ressemble pas à une clé GitHub : elle commence par « github_pat_ ».');
+  const btn = $('#saveSync');
+  btn.disabled = true; btn.textContent = 'Vérification…';
+  err.classList.remove('show');
+  let remote;
+  try{
+    remote = await syncProbe(token);
+  }catch(ex){
+    btn.disabled = false; btn.textContent = 'Activer';
+    return showErr(ex instanceof TypeError ? 'Impossible de joindre GitHub : vérifie ta connexion.' : ex.message);
+  }
+  btn.disabled = false; btn.textContent = 'Activer';
+  closeSheet($('#syncSheet'));
+
+  if(!remote){ activateSync(token, null, false); return; }
+  if(!remote.data){
+    askConfirm('La sauvegarde trouvée sur GitHub est illisible. La remplacer par les données de ce téléphone ?',
+      () => activateSync(token, remote, false), { confirmLabel:'Remplacer' });
+    return;
+  }
+  const { n, when } = remoteLabel(remote);
+  askConfirm('Une sauvegarde' + when + ' existe déjà sur GitHub (' + n + ' dépense' + (n > 1 ? 's' : '') + '). Ce téléphone en a '
+      + state.expenses.length + '. Laquelle garder ? L’autre version restera dans l’historique GitHub.',
+    () => activateSync(token, remote, true),
+    { confirmLabel:'Restaurer GitHub', cancelLabel:'Garder ce téléphone', onNo: () => activateSync(token, remote, false) });
+});
+
+$('#syncRestoreBtn').addEventListener('click', async () => {
+  if(!sync) return;
+  const token = sync.token;
+  let remote;
+  try{
+    remote = await readRemote(token);
+  }catch(ex){
+    return showToast(ex instanceof TypeError ? 'Impossible de joindre GitHub : vérifie ta connexion.' : ex.message);
+  }
+  if(!remote || !remote.data) return showToast('Aucune sauvegarde lisible sur GitHub pour l’instant.');
+  const { n, when } = remoteLabel(remote);
+  askConfirm('Remplacer les données de ce téléphone par la sauvegarde GitHub' + when + ' (' + n + ' dépense' + (n > 1 ? 's' : '') + ') ?', () => {
+    activateSync(token, remote, true);
+    closeSheet($('#settingsSheet'));
+  }, { confirmLabel:'Restaurer' });
+});
+
+$('#syncOffBtn').addEventListener('click', () => {
+  askConfirm('Désactiver la sauvegarde automatique ? La clé sera oubliée sur ce téléphone. La sauvegarde déjà sur GitHub reste intacte.', () => {
+    clearTimeout(syncTimer);
+    sync = null;
+    storeSync();
+    renderSyncStatus();
+    showToast('Sauvegarde automatique désactivée');
+  }, { danger:true, confirmLabel:'Désactiver' });
+});
+
+$('#settingsBtn').addEventListener('click', openSettings);
+$('#closeSettings').addEventListener('click', () => closeSheet($('#settingsSheet')));
+$('#openSalaryBtn').addEventListener('click', () => openSalarySheet(monthKey(currentMonth)));
+$('#currencyInput').addEventListener('change', e => {
+  state.settings.currency = e.target.value.trim() || '€';
+  save(); rebuildFormatters(); render();
+});
+$('#themeSelect').addEventListener('change', e => {
+  state.settings.theme = e.target.value;
+  save(); applyTheme();
+});
+$('#centsToggle').addEventListener('change', e => {
+  state.settings.showCents = e.target.checked;
+  save(); rebuildFormatters(); render();
+});
+$('#defaultGoalInput').addEventListener('change', e => {
+  const v = parseAmount(e.target.value);
+  state.settings.defaultSavingsGoal = (isFinite(v) && v >= 0) ? v : 0;
+  save(); render();
+});
+
+/* ---------- Export / Import / Reset ---------- */
+
+/* Export : partage natif (iOS/Android) si dispo, sinon téléchargement classique. */
+/* Sur la page hébergée (claude.ai), le téléchargement classique ne fait jamais rien —
+   seul le partage natif (Web Share) fonctionne. En local (fichier ou autre site), le
+   téléchargement classique marche normalement. */
+const ON_HOSTED_PAGE = location.hostname.endsWith('claude.ai');
+
+async function exportData(){
+  const filename = 'ecureuil-' + todayStr() + '.json';
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+  const file = new File([blob], filename, { type:'application/json' });
+  const canShareFile = !!(navigator.canShare && navigator.canShare({ files:[file] }));
+
+  if(canShareFile){
+    try{
+      await navigator.share({ files:[file] });
+    }catch(err){
+      if(err && err.name === 'AbortError') return; // partage annulé par l'utilisateur
+      showToast('Le partage a échoué — réessaie.');
+      return;
+    }
+    state.lastExportAt = Date.now();
+    save();
+    hideExportReminder();
+    showToast('Sauvegarde partagée');
+    return;
+  }
+
+  if(ON_HOSTED_PAGE){
+    showToast('Export indisponible sur ce navigateur ici — utilise Safari 15+ (partage natif), ou le fichier local sur ton ordinateur.');
+    return;
+  }
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  state.lastExportAt = Date.now();
+  save();
+  hideExportReminder();
+  showToast('Sauvegarde exportée');
+}
+$('#exportBtn').addEventListener('click', exportData);
+$('#erExportBtn').addEventListener('click', exportData);
+$('#erDismissBtn').addEventListener('click', () => {
+  state.reminderDismissedAt = Date.now();
+  save();
+  hideExportReminder();
+});
+
+/* Rappel d'export : suggère une sauvegarde si aucune depuis longtemps. */
+const EXPORT_REMINDER_MS = 14 * 24 * 3600 * 1000;
+function hideExportReminder(){ $('#exportReminder').hidden = true; }
+function checkExportReminder(){
+  const now = Date.now();
+  /* Sauvegarde automatique activée mais qui n'arrive plus à passer depuis 2 jours : on prévient. */
+  if(sync && sync.dirty && sync.lastError && now - (sync.lastSyncAt || sync.activatedAt || now) > 2 * DAY_MS){
+    if(state.reminderDismissedAt && now - state.reminderDismissedAt < DAY_MS) return;
+    $('#exportReminderText').textContent = '⚠ Ta sauvegarde automatique ne passe plus : ' + sync.lastError;
+    $('#exportReminder').hidden = false;
+    return;
+  }
+  if(state.expenses.length === 0) return;
+  if(state.reminderDismissedAt && now - state.reminderDismissedAt < EXPORT_REMINDER_MS) return;
+  /* Une sauvegarde automatique réussie compte comme une sauvegarde. */
+  const since = Math.max(state.lastExportAt || 0, (sync && sync.lastSyncAt) || 0) || state.installedAt || now;
+  if(now - since < EXPORT_REMINDER_MS) return;
+  const days = Math.floor((now - since) / (24 * 3600 * 1000));
+  $('#exportReminderText').textContent = state.lastExportAt
+    ? '🐿️ Dernière sauvegarde il y a ' + days + ' jours — pense à exporter.'
+    : '🐿️ Tu n’as jamais exporté tes données — ça prend 2 secondes.';
+  $('#exportReminder').hidden = false;
+}
+
+$('#importBtn').addEventListener('click', () => $('#importFile').click());
+$('#importFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  e.target.value = ''; // réinitialisé tout de suite : le fichier est déjà capturé ci-dessous
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onerror = () => showToast('Impossible de lire ce fichier.');
+  reader.onload = () => {
+    let data;
+    try{
+      data = JSON.parse(reader.result);
+      if(!data || !Array.isArray(data.expenses)) throw new Error('shape');
+    }catch(err){
+      showToast('Fichier invalide — impossible de lire cette sauvegarde.');
+      return;
+    }
+    askConfirm('Remplacer toutes les données actuelles par le contenu de ce fichier ?', () => {
+      state = migrate(data);
+      currentView = state.settings.view || 'expenses';
+      currentMonth = parseISO(currentBudgetMonth() + '-01');
+      searchTerm = ''; $('#searchInput').value = '';
+      save(); rebuildFormatters(); applyTheme(); render(); checkExportReminder();
+      closeSheet($('#settingsSheet'));
+      showToast('Données importées');
+    }, { confirmLabel:'Remplacer' });
+  };
+  reader.readAsText(file);
+});
+
+$('#resetBtn').addEventListener('click', () => {
+  askConfirm(
+    'Supprimer définitivement toutes les données (dépenses, salaire, revenus complémentaires, charges fixes, mis de côté) ? Cette action est irréversible.'
+      + (sync ? ' La sauvegarde GitHub sera aussi remplacée par des données vides (les anciennes versions restent dans l’historique GitHub).' : ''),
+    () => {
+      state = defaultState();
+      currentView = 'expenses';
+      currentMonth = parseISO(currentBudgetMonth() + '-01');
+      searchTerm = '';
+      $('#searchInput').value = '';
+      save(); rebuildFormatters(); applyTheme(); render(); hideExportReminder();
+      closeSheet($('#settingsSheet'));
+      showToast('Tout a été effacé');
+    },
+    { danger:true, confirmLabel:'Tout effacer' }
+  );
+});
+
+/* ---------- Démarrage ---------- */
+probeStorage();
+rebuildFormatters();
+applyTheme();
+render();
+checkExportReminder();
+
+/* Demande à conserver le stockage même sous pression (surtout utile en mode
+   « écran d'accueil » sur iOS, où Safari est plus agressif pour l'effacer). Best-effort. */
+if(navigator.storage && navigator.storage.persist){
+  navigator.storage.persist().catch(() => {});
+}
+
+/* Sauvegarde automatique : rattrape un envoi raté (fermeture rapide, pas de réseau) à
+   l'ouverture, au retour du réseau, et en quittant ou revenant dans l'appli. */
+if(sync && sync.dirty) setTimeout(pushSync, 1500);
+window.addEventListener('online', () => { if(sync && sync.dirty) pushSync(); });
+document.addEventListener('visibilitychange', () => { if(sync && sync.dirty) pushSync(); });
+</script>
+</body>
+</html>
