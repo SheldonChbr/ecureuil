@@ -1574,10 +1574,19 @@ function deleteExpense(id){
   });
 }
 
+/* La croix de la liste demande confirmation (facile à toucher par erreur). */
+function confirmDeleteExpense(id){
+  const e = state.expenses.find(x => x.id === id);
+  if(!e) return;
+  const amt = e.amount < 0 ? '+' + fmt(Math.abs(e.amount)) : fmt(e.amount);
+  askConfirm('Supprimer « ' + e.name + ' » (' + amt + ', ' + shortDayFr(e.date) + ') ?',
+    () => deleteExpense(id), { danger:true, confirmLabel:'Supprimer' });
+}
+
 $('#expenseList').addEventListener('click', e => {
   const row = e.target.closest('.expense-row');
   if(!row) return;
-  if(e.target.closest('[data-del]')){ deleteExpense(row.dataset.id); return; }
+  if(e.target.closest('[data-del]')){ confirmDeleteExpense(row.dataset.id); return; }
   openExpenseSheet(row.dataset.id);
 });
 $('#expenseList').addEventListener('keydown', e => {
